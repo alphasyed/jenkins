@@ -1,0 +1,23 @@
+pipeline {
+    
+    agent any
+    
+    tools {
+        maven 'maven3'
+    }
+    
+    stages{
+        
+        stage('checkout') {
+            steps{
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/alphasyed/test_multibranch']]])
+            }
+            
+        }
+        stage("build") {
+            steps {
+                sh 'mvn clean install -f WebApp/pom.xml'
+            }
+        }
+    }
+}
